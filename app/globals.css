@@ -58,27 +58,7 @@ body {
   border-radius: 3px;
 }
 
-/* ─── Hero Animations ─── */
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(245, 196, 0, 0.15); }
-  50% { box-shadow: 0 0 40px rgba(245, 196, 0, 0.3); }
-}
-
-@keyframes scroll-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(8px); }
-}
-
+/* ─── Keyframes (grain only) ─── */
 @keyframes grain {
   0%, 100% { transform: translate(0, 0); }
   10% { transform: translate(-5%, -10%); }
@@ -92,48 +72,12 @@ body {
   90% { transform: translate(-10%, 10%); }
 }
 
-@keyframes floatUp {
-  0%   { transform: translateY(0px);   opacity: 0.25; }
-  100% { transform: translateY(-160px); opacity: 0; }
-}
-
-.particle {
-  animation: floatUp linear infinite;
-  will-change: transform;
-}
-
-@keyframes kenBurns {
-  0%   { transform: scale(1.0); }
-  100% { transform: scale(1.08); }
-}
-
-.hero-image {
-  animation: kenBurns 12s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
 /* ─── Utility Classes ─── */
 .text-gradient {
   background: linear-gradient(135deg, var(--color-accent), var(--color-gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-.shimmer-text {
-  background: linear-gradient(
-    90deg,
-    var(--color-accent) 0%,
-    var(--color-gold) 25%,
-    var(--color-white) 50%,
-    var(--color-gold) 75%,
-    var(--color-accent) 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 4s linear infinite;
 }
 
 .glass-card {
@@ -153,6 +97,399 @@ body {
   animation: grain 8s steps(10) infinite;
   pointer-events: none;
   z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════ */
+/* HERO SECTION — Split Layout                     */
+/* ═══════════════════════════════════════════════ */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Background image */
+.hero-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-bg-image {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Overlay — single diagonal gradient */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(10, 10, 10, 0.97) 0%,
+    rgba(10, 10, 10, 0.92) 30%,
+    rgba(10, 10, 10, 0.65) 55%,
+    rgba(10, 10, 10, 0.30) 80%,
+    rgba(10, 10, 10, 0.15) 100%
+  );
+  z-index: 2;
+}
+
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Split grid — 55/45 desktop */
+.hero-split {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 55% 45%;
+  height: 100%;
+  align-items: center;
+  pointer-events: auto;
+}
+
+/* Left content */
+.hero-content {
+  padding: 0 clamp(2rem, 5vw, 6rem);
+  padding-top: 72px; /* navbar height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  gap: 0;
+  position: relative;
+  z-index: 10;
+}
+
+/* Right media space — allows bg image to show through */
+.hero-media {
+  position: relative;
+  height: 100%;
+}
+
+/* ── Eyebrow ── */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  border: 1px solid rgba(245, 196, 0, 0.2);
+  background: rgba(245, 196, 0, 0.06);
+  border-radius: 9999px;
+  padding: 0.5rem 1.25rem;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+.hero-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Headline ── */
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5.5vw, 80px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.hero-headline-white {
+  color: var(--color-white);
+}
+
+.hero-headline-accent {
+  color: var(--color-accent);
+}
+
+/* ── Subheadline ── */
+.hero-sub {
+  margin-top: 1.5rem;
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  color: var(--color-muted);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+.hero-sub-bold {
+  color: var(--color-white);
+  font-weight: 500;
+}
+
+/* ── CTA Button ── */
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding: 1rem 2.25rem;
+  border-radius: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-bg);
+  background: var(--color-accent);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+              background 0.25s ease;
+  box-shadow: 0 4px 24px rgba(245, 196, 0, 0.2);
+  width: fit-content;
+  will-change: transform;
+}
+
+.hero-cta:hover {
+  background: var(--color-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(245, 196, 0, 0.3);
+}
+
+.hero-cta:active {
+  transform: scale(0.97) translateY(0);
+  box-shadow: 0 2px 12px rgba(245, 196, 0, 0.15);
+  transition-duration: 0.1s;
+}
+
+.hero-cta:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ── Credential Pills ── */
+.hero-credentials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+}
+
+.hero-credential-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  white-space: nowrap;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.hero-credential-pill:hover {
+  border-color: rgba(245, 196, 0, 0.25);
+  color: var(--color-white);
+}
+
+.hero-credential-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+/* ── Trust Bar (bottom) ── */
+.hero-trust-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 14px 0;
+}
+
+.hero-trust-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero-trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: default;
+}
+
+.hero-trust-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hero-trust-badge:hover .hero-trust-icon {
+  transform: scale(1.15);
+}
+
+.hero-trust-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+.hero-trust-badge:hover .hero-trust-label {
+  color: var(--color-white);
+}
+
+/* ── Hero Responsive — Tablet ── */
+@media (max-width: 1023px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-media {
+    display: none;
+  }
+
+  .hero-content {
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    padding-top: 72px;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.85) 0%,
+      rgba(10, 10, 10, 0.75) 40%,
+      rgba(10, 10, 10, 0.60) 100%
+    );
+  }
+}
+
+/* ── Hero Responsive — Mobile ── */
+@media (max-width: 767px) {
+  .hero-section {
+    min-height: 100svh;
+    min-height: 100vh;
+  }
+
+  .hero-content {
+    padding: 0 1.5rem;
+    padding-top: 90px;
+    padding-bottom: 2rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  /* Stronger overlay for text readability */
+  .hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.92) 0%,
+      rgba(10, 10, 10, 0.85) 40%,
+      rgba(10, 10, 10, 0.70) 100%
+    );
+  }
+
+  /* Eyebrow */
+  .hero-eyebrow {
+    font-size: 0.6rem;
+    padding: 0.35rem 0.85rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+  }
+
+  /* Headline — LARGE, dominant, professional */
+  .hero-headline {
+    font-size: clamp(40px, 11vw, 56px);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+  }
+
+  /* Subhead */
+  .hero-sub {
+    font-size: 0.92rem;
+    margin-top: 1rem;
+    max-width: 32ch;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* CTA — proportional, NOT full width */
+  .hero-cta {
+    width: auto;
+    margin-top: 1.5rem;
+    padding: 0.65rem 1.5rem;
+    font-size: 0.82rem;
+    border-radius: 0.5rem;
+  }
+
+  /* Kill credential pills on mobile — too noisy */
+  .hero-credentials {
+    display: none;
+  }
+
+  /* Kill trust bar on mobile — eliminates scattered badge chaos */
+  .hero-trust-bar {
+    display: none;
+  }
+}
+
+/* ── Small phones (≤400px) ── */
+@media (max-width: 400px) {
+  .hero-content {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 80px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.52rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .hero-headline {
+    font-size: clamp(34px, 10vw, 46px);
+  }
+
+  .hero-sub {
+    font-size: 0.82rem;
+  }
 }
 
 /* ─── Navbar ─── */
@@ -407,7 +744,7 @@ body {
 }
 
 /* Mobile */
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .wcu-cards-grid {
     grid-template-columns: 1fr;
   }
@@ -415,3 +752,104 @@ body {
     display: none;
   }
 }
+
+/* ═══════════════════════════════════════════════ */
+/* SERVICES GRID v2 — Responsive                   */
+/* ═══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .services-grid-inner {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 640px) {
+  .services-grid-inner {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════ */
+/* COMPREHENSIVE MOBILE RESPONSIVENESS             */
+/* ═══════════════════════════════════════════════ */
+
+/* ─── WhyChooseUs Cards Grid — responsive columns ─── */
+.wcu-cards-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 1024px) {
+  .wcu-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 767px) {
+  .wcu-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .wcu-card-inner {
+    padding: 32px 24px !important;
+  }
+  .wcu-cards-wrapper {
+    padding: 48px 0 !important;
+  }
+}
+
+/* (Hero responsive rules are now in the hero section block above) */
+
+/* ─── Services Grid Cards — Mobile ─── */
+@media (max-width: 767px) {
+  .services-grid-inner > div {
+    padding: 28px 20px !important;
+    min-height: 200px !important;
+  }
+}
+
+/* ─── Services Expanded Card — Tablet ─── */
+@media (max-width: 1023px) {
+  .services-expanded-content {
+    padding: 36px 28px !important;
+  }
+}
+
+/* ─── Services Expanded Card — Mobile ─── */
+@media (max-width: 767px) {
+  .services-expanded-card {
+    flex-direction: column !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .services-expanded-image {
+    width: 100% !important;
+    height: 180px !important;
+    min-height: 180px !important;
+    max-height: 180px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .services-expanded-content {
+    padding: 24px 20px !important;
+    justify-content: flex-start !important;
+  }
+
+  .services-expanded-content h2 {
+    font-size: 24px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .services-expanded-content p {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+}
+
+/* ─── Testimonials — Mobile ─── */
+@media (max-width: 767px) {
+  #testimonials .testimonials-carousel {
+    gap: 16px !important;
+    padding: 24px 5% !important;
+  }
+}
+
+/* (Small phone hero rules consolidated in hero section block above) */

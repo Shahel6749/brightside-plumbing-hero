@@ -538,6 +538,7 @@ export default function WhyChooseUs() {
       {/* ROW 3 — FEATURE CARDS                      */}
       {/* ═══════════════════════════════════════════ */}
       <div
+        className="wcu-cards-wrapper"
         style={{
           padding: "80px 0",
           borderTop: "1px solid #2A2A2A",
@@ -548,7 +549,6 @@ export default function WhyChooseUs() {
           className="wcu-cards-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
             gap: "1px",
             backgroundColor: "#2A2A2A",
             border: "1px solid #2A2A2A",
@@ -560,7 +560,7 @@ export default function WhyChooseUs() {
           {featureCards.map((card) => (
             <motion.div
               key={card.headline}
-              className="feature-card"
+              className="feature-card wcu-card-inner"
               whileHover={{ y: -4 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               style={{
